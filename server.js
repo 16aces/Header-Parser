@@ -1,22 +1,35 @@
 var express = require('express');
 var app = express();
+var ip = require('ip');
 
 // set the port of our application
 // process.env.PORT lets the port be set by Heroku
 var port = process.env.PORT || 8080;
 
-// set the view engine to ejs
-app.set('view engine', 'ejs');
+// start the server
 
-// make express look in the public directory for assets (css/js/img)
-app.use(express.static(__dirname + '/public'));
 
-// set the home page route
-app.get('/', function(req, res) {
+//newer version
+//app.use(bodyParser.urlencoded({ extended: false }))
+//app.use(bodyParser.json())
+var os = require('os');
+var ans= "test";
 
-	// ejs render automatically looks in the views folder
-	res.render('index');
+
+
+app.get('/*', function(req, res) {
+	
+   
+var ipa=req.connection.remoteAddress;
+ 
+
+  var language =  req.headers["accept-language"].split(',')[0]
+  var ops= os.type();
+  ans = '{"ipaddress":"'+ipa+'","language":"'+language+'","software":"'+ops+'"}'
+
+  res.send( ans);
 });
+
 
 app.listen(port, function() {
 	console.log('Our app is running on http://localhost:' + port);
