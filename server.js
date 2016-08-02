@@ -23,10 +23,10 @@ app.get('/*', function(req, res) {
    
    
  
-var ipyo = function(req, res, next) {
-    ipa = requestIp.getClientIp(req); // on localhost > 127.0.0.1
-    next();
-};
+var ipa = req.headers['x-forwarded-for'] || 
+     req.connection.remoteAddress || 
+     req.socket.remoteAddress ||
+     req.connection.socket.remoteAddress;
   var language =  req.headers["accept-language"].split(',')[0]
   var ops= os.type();
   ans = '{"ipaddress":"'+ipa+'","language":"'+language+'","software":"'+ops+'"}'
